@@ -5,7 +5,7 @@ import gnupg
 
 
 class GPG(object):
-    def __init__(self, keyid, key=None, home=None):
+    def __init__(self, keyid, key=None, home='~/.gnupg'):
         self.gpg = gnupg.GPG(use_agent=False, gnupghome='~/.gnupg')
         if key:
             if not home:
