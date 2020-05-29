@@ -25,7 +25,7 @@ setup(
     author = 'Noah Kantrowitz',
     author_email = 'noah@coderanger.net',
     description = 'Manage package repositories in the cloud.',
-    long_description = open(os.path.join(os.path.dirname(__file__), 'README.mdº')).read(),
+    long_description = open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     license = 'Apache 2.0',
     keywords = '',
     url = 'http://github.com/coderanger/depot',
