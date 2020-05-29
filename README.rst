@@ -39,7 +39,7 @@ Example
 
 Repo dir structure
 -------------------
-```
+```bash
 .
 └── apt/
     ├── pool/
