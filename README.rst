@@ -39,7 +39,7 @@ Example
 
 Repo dir structure
 -------------------
-
+```
 .
 └── apt/
     ├── pool/
@@ -58,6 +58,7 @@ Repo dir structure
         │       │   └── Packages.gz
         │       └── source/
         └── bionic
+```
 
 Storage Location
 ----------------
