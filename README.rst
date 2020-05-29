@@ -30,18 +30,34 @@ Example
 -------
 
 ::
-
-  depot -s s3://nr-repo-apt -c precise --pool-path=pool/main/n/nri-redis/nri-redis_1.4.0-1_amd64.deb ../nri-redis_1.4.0-1_amd64.deb -k 258912FEA8A556A83881187D1099BA4A1F5BB4C0 --force
+  depot -s s3://nr-repo-apt \
+    -c precise \
+    -k 258912FEA8A556A83881187D1099BA4A1F5BB4C0 \
+    --pool-path=pool/main/n/nri-redis/nri-redis_1.4.0-1_amd64.deb \
+    ../nri-redis_1.4.0-1_amd64.deb \
+    --force
 
 Repo dir structure
 -------------------
 
- apt-|-pool-main-n-nri-redis-nri-redis_1.4.0-1_amd64.deb
-     |
-     |-dist--precise-
-            |-bionic-
-            |-xenial-
-
+.
+└── apt/
+    ├── pool/
+    │   └── main/
+    │       └── n/
+    │           ├── nri-redis/
+    │           │   └── nri-redis_1.4.0-1_amd64.deb
+    │           └── nri-fafka/
+    └── dists/
+        ├── precise/
+        │   └── main/
+        │       ├── binary-all/
+        │       ├── binary-amd64/
+        │       │   ├── Packages
+        │       │   ├── Packages.bz2
+        │       │   └── Packages.gz
+        │       └── source/
+        └── bionic
 
 Storage Location
 ----------------
