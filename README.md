@@ -1,8 +1,6 @@
 Depot
 =====
 
-.. image:: https://travis-ci.org/coderanger/depot.png?branch=master   :target: https://travis-ci.org/coderanger/depot
-
 Used to push, it is a replacement for reprepro+s3cmd sync and whatnot.
 
 It does incremental updates of a repo, so you don't need to keep a full local copy of the repo anymore.
@@ -12,8 +10,7 @@ You just feed it each package as they are made and it updates all the various me
 Usage
 -----
 
-::
-
+```
   Usage: depot [options] <package> [<package> ...]
 
   -h --help                    show this help message and exit
@@ -25,17 +22,20 @@ Usage
   -k KEYID --gpg-key=KEYID     GPG key ID to use for signing
   --no-sign                    do not sign this upload
   --no-public                  do not make cloud files public-readable
+```
 
 Example
 -------
 
-::
+```
   depot -s s3://nr-repo-apt \
     -c precise \
     -k 258912FEA8A556A83881187D1099BA4A1F5BB4C0 \
     --pool-path=pool/main/n/nri-redis/nri-redis_1.4.0-1_amd64.deb \
     ../nri-redis_1.4.0-1_amd64.deb \
     --force
+```
+
 
 Repo dir structure
 -------------------
@@ -70,3 +70,8 @@ S3 Credentials
 
 You can pass your AWS access key ID and secret access key as the username and password in the storage URI,
 or if not present depot will check the $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY environment variables.
+
+
+Credits
+-------
+Thanks to coderanger https://travis-ci.org/coderanger/depot
