@@ -43,7 +43,7 @@ setup(
         'Programming Language :: Python',
     ],
     zip_safe = False,
-    install_requires = ['apache-libcloud <=0.14.1', 'docopt==0.6.1', 'six<=1.5.2', 'lockfile<=0.10.2', 'arpy<=1.1.1', 'python-gnupg<=0.3.6', 'defusedxml<=0.4.1', 'lxml<=3.3.4'],
+    install_requires = ['apache-libcloud <=0.14.1', 'docopt==0.6.1', 'six<=1.5.2', 'lockfile<=0.10.2', 'arpy<=1.1.1', 'python-gnupg<=0.4.6', 'defusedxml<=0.4.1', 'lxml<=3.3.4'],
     tests_require = ['pytest', 'pretend', 'flake8'],
     cmdclass = {'test': PyTest},
     entry_points = {
