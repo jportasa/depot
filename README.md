@@ -74,4 +74,4 @@ or if not present depot will check the $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS
 
 Credits
 -------
-Thanks to coderanger https://travis-ci.org/coderanger/depot
+Thanks to coderanger https://github.com/coderanger/depot

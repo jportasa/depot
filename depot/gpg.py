@@ -5,8 +5,8 @@ import gnupg
 
 
 class GPG(object):
-    def __init__(self, keyid, key=None, home='~/.gnupg'):
-        self.gpg = gnupg.GPG(use_agent=False, gnupghome='~/.gnupg')
+    def __init__(self, keyid, key=None, home=None):
+        self.gpg = gnupg.GPG(use_agent=False, gnupghome=home)
         if key:
             if not home:
                 raise ValueError('Cowardly refusing to import key in to default key store')
