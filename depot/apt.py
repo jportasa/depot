@@ -117,7 +117,7 @@ class AptRelease(AptMeta):
         return '\n' + '\n'.join(' {0} {1} {2}'.format(hash, size, path) for path, (hash, size) in six.iteritems(self.hashes[key]))
 
     def update_hash(self, path):
-        hashes = self.storage.hashes('infrastructure_agent/linux/apt/dists/{0}/{1}'.format(self.codename, path))
+        hashes = self.storage.hashes(args['--base-path'] + '/' + 'dists/{0}/{1}'.format(self.codename, path))
         for hash_type in list(six.iterkeys(self.hashes)):
             self.hashes[hash_type][path] = (hashes[hash_type].hexdigest(), str(hashes['size'].size))
 
@@ -187,7 +187,7 @@ class AptRepository(object):
 
     def commit_package_metadata(self, arch, pkgs):
         # Update the Packages file
-        packages_path = 'infrastructure_agent/linux/apt/dists/{0}/{1}/binary-{2}/Packages'.format(self.codename, self.component, arch)
+        packages_path = args['--base-path'] + '/' + 'apt/dists/{0}/{1}/binary-{2}/Packages'.format(self.codename, self.component, arch)
         packages = AptPackages(self.storage, self.storage.download(packages_path, skip_hash=True) or '')
         for pkg in pkgs:
             packages.add(pkg)
@@ -200,7 +200,7 @@ class AptRepository(object):
 
     def commit_sources_metadata(self):
         # Update the Sources file
-        sources_path = 'infrastructure_agent/linux/apt/dists/{0}/{1}/source/Sources'.format(self.codename, self.component)
+        sources_path = args['--base-path'] + '/' + 'apt/dists/{0}/{1}/source/Sources'.format(self.codename, self.component)
         if sources_path in self.storage:
             return
         sources_content = ''
@@ -213,7 +213,7 @@ class AptRepository(object):
 
     def commit_release_metadata(self, archs):
         # Update Release
-        release_path = 'infrastructure_agent/linux/apt/dists/{0}/Release'.format(self.codename)
+        release_path = args['--base-path'] + '/' + 'apt/dists/{0}/Release'.format(self.codename)
         release = AptRelease(self.storage, self.codename, self.storage.download(release_path, skip_hash=True) or '')
         for arch in archs:
             release.add_metadata(self.component, arch)
@@ -239,7 +239,7 @@ class AptRepository(object):
         # GPG signing
         if self.gpg:
             # Fun fact, even debian's own tools don't seem to support this InRelease file
-            in_release_path = 'infrastructure_agent/linux/apt/dists/{0}/InRelease'.format(self.codename)
+            in_release_path = args['--base-path'] + '/' + 'apt/dists/{0}/InRelease'.format(self.codename)
             self.storage.upload(in_release_path, self.gpg.sign(release_raw))
             self.storage.upload(release_path+'.gpg', self.gpg.sign(release_raw, detach=True))
 

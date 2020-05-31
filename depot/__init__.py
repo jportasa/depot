@@ -49,7 +49,7 @@ def main():
         else:
             print('Uploading package {0}'.format(pkg_path))
             fileobj = StorageWrapper.file(pkg_path)
-            if not repo.add_package(pkg_path, fileobj, args['--force'], args['--pool-path']):
+            if not repo.add_package(pkg_path, fileobj, args['--force'], args['--base-path'] + '/' + args['--pool-path']):
                 print('{0} already uploaded, skipping (use --force to override)'.format(pkg_path))
             fileobj.close()
     print('Uploading metadata')
