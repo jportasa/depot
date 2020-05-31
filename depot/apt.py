@@ -83,7 +83,7 @@ class AptPackages(object):
 
 
 class AptRelease(AptMeta):
-    def __init__(self, storage, codename, *args, **kwargs, base_path):
+    def __init__(self, storage, codename, base_path, *args, **kwargs):
         self.storage = storage
         self.codename = codename
         self.base_path = base_path
