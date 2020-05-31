@@ -244,7 +244,7 @@ class AptRepository(object):
             self.storage.upload(release_path+'.gpg', self.gpg.sign(release_raw, detach=True))
 
             # Upload the pubkey to be nice
-            self.storage.upload('pubkey.gpg', self.gpg.public_key())
+            self.storage.upload('gpg/newrelic-infra.gpg', self.gpg.public_key())
 
     def commit_metadata(self):
         for arch, packages in six.iteritems(self.dirty_packages):
