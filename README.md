@@ -40,7 +40,7 @@ Example
 Repo dir structure
 -------------------
 ```
-└── apt/
+└── infrastructure_agent/linux/apt/
     ├── pool/
     │   └── main/
     │       └── n/
