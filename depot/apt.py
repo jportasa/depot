@@ -83,7 +83,7 @@ class AptPackages(object):
 
 
 class AptRelease(AptMeta):
-    def __init__(self, storage, codename, *args, **kwargs):
+    def __init__(self, storage, codename, *args, **kwargs, base_path):
         self.storage = storage
         self.codename = codename
         super(AptRelease, self).__init__(*args, **kwargs)
@@ -116,8 +116,8 @@ class AptRelease(AptMeta):
     def _compile_hashes(self, key):
         return '\n' + '\n'.join(' {0} {1} {2}'.format(hash, size, path) for path, (hash, size) in six.iteritems(self.hashes[key]))
 
-    def update_hash(self, path):
-        hashes = self.storage.hashes(args['--base-path'] + '/' + 'dists/{0}/{1}'.format(self.codename, path))
+    def update_hash(self, path, base_path='.'):
+        hashes = self.storage.hashes(base_path + '/' + 'dists/{0}/{1}'.format(self.codename, path))
         for hash_type in list(six.iterkeys(self.hashes)):
             self.hashes[hash_type][path] = (hashes[hash_type].hexdigest(), str(hashes['size'].size))
 
