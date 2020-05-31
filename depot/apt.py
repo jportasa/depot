@@ -86,6 +86,7 @@ class AptRelease(AptMeta):
     def __init__(self, storage, codename, *args, **kwargs, base_path):
         self.storage = storage
         self.codename = codename
+        self.base_path = base_path
         super(AptRelease, self).__init__(*args, **kwargs)
         if 'Components' not in self:
             # Need to setup some defaults
