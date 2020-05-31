@@ -48,7 +48,7 @@ def main():
     else:
         gpg = GPG(args['--gpg-key'])
     storage = StorageWrapper(args['--storage'], args['--no-public'])
-    repo = AptRepository(storage, gpg, args['--codename'], args['--component'], args['--architecture'])
+    repo = AptRepository(storage, gpg, args['--codename'], args['--component'], args['--architecture'], args['--base-path'])
     for pkg_path in args['<package>']:
         if '@' in pkg_path:
             print('Copying package {0}'.format(pkg_path))

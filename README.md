@@ -22,6 +22,7 @@ Usage
   -k KEYID --gpg-key=KEYID     GPG key ID to use for signing
   --no-sign                    do not sign this upload
   --no-public                  do not make cloud files public-readable
+  --base-path=PATH             Base path where all begins ;-)
 ```
 
 Example

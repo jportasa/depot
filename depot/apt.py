@@ -146,7 +146,7 @@ class AptRepository(object):
     # ex. mypgk@1.0
     COPY_SPEC_RE = re.compile(r'^([\w_-]+)@(.+?)$')
 
-    def __init__(self, storage, gpg, codename, component='main', architecture=None):
+    def __init__(self, storage, gpg, codename, component='main', architecture=None, base_path):
         self.storage = storage
         self.gpg = gpg
         self.codename = codename
@@ -154,6 +154,7 @@ class AptRepository(object):
         self.architecture = architecture
         self.dirty_packages = {}  # arch: [pkg,+]
         self.dirty_sources = False
+        self.base_path = base_path
 
     def add_package(self, path, fileobj=None, force=False, pool_path=None):
         fileobj = fileobj or open(path, 'rb')
@@ -187,7 +188,7 @@ class AptRepository(object):
 
     def commit_package_metadata(self, arch, pkgs):
         # Update the Packages file
-        packages_path = args['--base-path'] + '/' + 'apt/dists/{0}/{1}/binary-{2}/Packages'.format(self.codename, self.component, arch)
+        packages_path = self.base_path + '/' + 'apt/dists/{0}/{1}/binary-{2}/Packages'.format(self.codename, self.component, arch)
         packages = AptPackages(self.storage, self.storage.download(packages_path, skip_hash=True) or '')
         for pkg in pkgs:
             packages.add(pkg)
@@ -213,7 +214,7 @@ class AptRepository(object):
 
     def commit_release_metadata(self, archs):
         # Update Release
-        release_path = args['--base-path'] + '/' + 'apt/dists/{0}/Release'.format(self.codename)
+        release_path = self.base_path + '/' + 'apt/dists/{0}/Release'.format(self.codename)
         release = AptRelease(self.storage, self.codename, self.storage.download(release_path, skip_hash=True) or '')
         for arch in archs:
             release.add_metadata(self.component, arch)
@@ -239,7 +240,7 @@ class AptRepository(object):
         # GPG signing
         if self.gpg:
             # Fun fact, even debian's own tools don't seem to support this InRelease file
-            in_release_path = args['--base-path'] + '/' + 'apt/dists/{0}/InRelease'.format(self.codename)
+            in_release_path = self.base_path + '/' + 'apt/dists/{0}/InRelease'.format(self.codename)
             self.storage.upload(in_release_path, self.gpg.sign(release_raw))
             self.storage.upload(release_path+'.gpg', self.gpg.sign(release_raw, detach=True))
 
