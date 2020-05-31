@@ -31,7 +31,7 @@ Example
   depot -s s3://nr-repo-apt \
     -c precise \
     -k 258912FEA8A556A83881187D1099BA4A1F5BB4C0 \
-    --pool-path=pool/main/n/nri-redis/nri-redis_1.4.0-1_amd64.deb \
+    --pool-path=infrastructure_agent/linux/apt/pool/main/n/nri-redis/nri-redis_1.4.0-1_amd64.deb \
     ../nri-redis_1.4.0-1_amd64.deb \
     --force
 ```
