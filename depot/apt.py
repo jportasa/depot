@@ -216,7 +216,7 @@ class AptRepository(object):
     def commit_release_metadata(self, archs):
         # Update Release
         release_path = self.base_path + '/' + 'dists/{0}/Release'.format(self.codename)
-        release = AptRelease(self.storage, self.codename, self.storage.download(release_path, skip_hash=True) or '')
+        release = AptRelease(self.storage, self.codename, self.base_path, self.storage.download(release_path, skip_hash=True) or '')
         for arch in archs:
             release.add_metadata(self.component, arch)
             release_packages_path = '{0}/binary-{1}/Packages'.format(self.component, arch)
