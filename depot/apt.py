@@ -146,7 +146,7 @@ class AptRepository(object):
     # ex. mypgk@1.0
     COPY_SPEC_RE = re.compile(r'^([\w_-]+)@(.+?)$')
 
-    def __init__(self, storage, gpg, codename, component='main', architecture=None, base_path):
+    def __init__(self, storage, gpg, codename, component='main', architecture=None, base_path='.'):
         self.storage = storage
         self.gpg = gpg
         self.codename = codename
