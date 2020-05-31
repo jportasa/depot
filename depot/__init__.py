@@ -11,9 +11,16 @@
 --no-public                  do not make cloud files public-readable
 --force                      force upload, even if overwriting
 --pool-path=PATH             override pool path for the package
+--base-path=PATH             Base path where all begins ;-)
 
 Example:
-depot -s s3://apt.example.com -c precise -k 6791B14F mypackage.deb
+depot -s s3://nr-repo-apt \
+    -c precise \
+    --gpg-key=258912FEA8A556A83881187D1099BA4A1F5BB4C0 \
+    --base-path=infrastructure_agent/linux/apt \
+    --pool-path=pool/main/n/nri-redis/nri-redis_1.4.0-1_amd64.deb \
+    ../nri-redis_1.4.0-1_amd64.deb \
+    --force
 
 """
 
