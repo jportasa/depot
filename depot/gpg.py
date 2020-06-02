@@ -5,7 +5,7 @@ import gnupg
 
 
 class GPG(object):
-    def __init__(self, keyid, key=None, home=None):
+    def __init__(self, keyid, passphrase=None, key=None, home=None):
         self.gpg = gnupg.GPG(use_agent=False, gnupghome=home)
         if key:
             if not home:
@@ -17,9 +17,9 @@ class GPG(object):
             # Compat with how Freight does it.
             self.keyid = os.environ.get('GPG')
         self.passphrase = None
-        self._verify()
+        self._verify(passphrase)
 
-    def _verify(self):
+    def _verify(self, passphrase):
         """Some sanity checks on GPG."""
         if not self.keyid:
             raise ValueError('No GPG key specified for signing, did you mean to use --no-sign?')
@@ -28,7 +28,8 @@ class GPG(object):
             raise ValueError('Key not found')
         elif 'NEED_PASSPHRASE' in sign.stderr:
             self.passphrase = getpass.getpass('Passphrase for GPG key: ')
-        self.passphrase = os.environ.get('PASSPHRASE')
+        else:
+            self.passphrase = passphrase
 
     def sign(self, data, detach=False):
         sign = self.gpg.sign(data, keyid=self.keyid, passphrase=self.passphrase, detach=detach)

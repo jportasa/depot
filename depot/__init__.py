@@ -47,7 +47,7 @@ def main():
     if args['--no-sign']:
         gpg = None
     else:
-        gpg = GPG(args['--gpg-key'])
+        gpg = GPG(args['--gpg-key'], args['--passphrase'])
     storage = StorageWrapper(args['--storage'], args['--no-public'])
     repo = AptRepository(storage, gpg, args['--codename'], args['--component'], args['--architecture'], args['--base-path'])
     for pkg_path in args['<package>']:
