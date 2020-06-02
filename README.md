@@ -23,6 +23,7 @@ Usage
   --no-sign                    do not sign this upload
   --no-public                  do not make cloud files public-readable
   --base-path=PATH             Base path where all begins ;-)
+  --passphrase=PASSPHRASE      The Passphrase generated using gpg --generate-key
 ```
 
 Example

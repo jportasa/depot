@@ -28,6 +28,7 @@ class GPG(object):
             raise ValueError('Key not found')
         elif 'NEED_PASSPHRASE' in sign.stderr:
             self.passphrase = getpass.getpass('Passphrase for GPG key: ')
+        self.passphrase = os.environ.get('PASSPHRASE')
 
     def sign(self, data, detach=False):
         sign = self.gpg.sign(data, keyid=self.keyid, passphrase=self.passphrase, detach=detach)
