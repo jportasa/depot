@@ -50,7 +50,7 @@ class AptPackage(AptMeta):
                 self.ar = arpy.Archive(filename)
             self.ar.read_all_headers()
             self.control_tar = tarfile.open('control.tar.gz', 'r:gz', fileobj=self.ar.archived_files['control.tar.gz'])
-            data = self.control_tar.extractfile('./control')
+            data = self.control_tar.extractfile('control')
         super(AptPackage, self).__init__(data)
 
     @property
