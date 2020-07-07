@@ -62,3 +62,4 @@ def main():
             fileobj.close()
     print('Uploading metadata')
     repo.commit_metadata()
+
