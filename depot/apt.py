@@ -160,7 +160,8 @@ class AptRepository(object):
     def add_package(self, path, fileobj=None, force=False, pool_path=None, base_path=None):
         fileobj = fileobj or open(path, 'rb')
         path = os.path.basename(path)
-        pkg = AptPackage(path, fileobj, pool_path=pool_path.strip(base_path))
+        stripped_path = pool_path.strip(base_path)
+        pkg = AptPackage(path, fileobj, pool_path=stripped_path)
         # Check that we have an arch if needed
         arch = pkg['Architecture']
         if pkg['Architecture'] == 'any':
