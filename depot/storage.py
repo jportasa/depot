@@ -127,7 +127,7 @@ class StorageWrapper(object):
         driver = cls._get_driver(uri.scheme)
         key = uri.username
         secret = uri.password
-        container = uri.netloc
+        container = uri.netloc + uri.path
         driver_kwargs = {}
         if uri.scheme.startswith('s3'):
             if not key:

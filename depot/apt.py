@@ -50,7 +50,7 @@ class AptPackage(AptMeta):
                 self.ar = arpy.Archive(filename)
             self.ar.read_all_headers()
             self.control_tar = tarfile.open('control.tar.gz', 'r:gz', fileobj=self.ar.archived_files['control.tar.gz'])
-            data = self.control_tar.extractfile('control')
+            data = self.control_tar.extractfile('./control')
         super(AptPackage, self).__init__(data)
 
     @property
@@ -83,10 +83,9 @@ class AptPackages(object):
 
 
 class AptRelease(AptMeta):
-    def __init__(self, storage, codename, base_path, *args, **kwargs):
+    def __init__(self, storage, codename, *args, **kwargs):
         self.storage = storage
         self.codename = codename
-        self.base_path = base_path
         super(AptRelease, self).__init__(*args, **kwargs)
         if 'Components' not in self:
             # Need to setup some defaults
@@ -117,8 +116,8 @@ class AptRelease(AptMeta):
     def _compile_hashes(self, key):
         return '\n' + '\n'.join(' {0} {1} {2}'.format(hash, size, path) for path, (hash, size) in six.iteritems(self.hashes[key]))
 
-    def update_hash(self, path, base_path='.'):
-        hashes = self.storage.hashes(base_path + '/' + 'dists/{0}/{1}'.format(self.codename, path))
+    def update_hash(self, path):
+        hashes = self.storage.hashes('dists/{0}/{1}'.format(self.codename, path))
         for hash_type in list(six.iterkeys(self.hashes)):
             self.hashes[hash_type][path] = (hashes[hash_type].hexdigest(), str(hashes['size'].size))
 
@@ -147,7 +146,7 @@ class AptRepository(object):
     # ex. mypgk@1.0
     COPY_SPEC_RE = re.compile(r'^([\w_-]+)@(.+?)$')
 
-    def __init__(self, storage, gpg, codename, component='main', architecture=None, base_path='.'):
+    def __init__(self, storage, gpg, codename, component='main', architecture=None):
         self.storage = storage
         self.gpg = gpg
         self.codename = codename
@@ -155,13 +154,11 @@ class AptRepository(object):
         self.architecture = architecture
         self.dirty_packages = {}  # arch: [pkg,+]
         self.dirty_sources = False
-        self.base_path = base_path
 
-    def add_package(self, path, fileobj=None, force=False, pool_path=None, base_path=None):
+    def add_package(self, path, fileobj=None, force=False, pool_path=None):
         fileobj = fileobj or open(path, 'rb')
         path = os.path.basename(path)
-        stripped_path = pool_path.strip(base_path)
-        pkg = AptPackage(path, fileobj, pool_path=stripped_path)
+        pkg = AptPackage(path, fileobj, pool_path=pool_path)
         # Check that we have an arch if needed
         arch = pkg['Architecture']
         if pkg['Architecture'] == 'any':
@@ -190,7 +187,7 @@ class AptRepository(object):
 
     def commit_package_metadata(self, arch, pkgs):
         # Update the Packages file
-        packages_path = self.base_path + '/' + 'dists/{0}/{1}/binary-{2}/Packages'.format(self.codename, self.component, arch)
+        packages_path = 'dists/{0}/{1}/binary-{2}/Packages'.format(self.codename, self.component, arch)
         packages = AptPackages(self.storage, self.storage.download(packages_path, skip_hash=True) or '')
         for pkg in pkgs:
             packages.add(pkg)
@@ -203,7 +200,7 @@ class AptRepository(object):
 
     def commit_sources_metadata(self):
         # Update the Sources file
-        sources_path = self.base_path + '/' + 'dists/{0}/{1}/source/Sources'.format(self.codename, self.component)
+        sources_path = 'dists/{0}/{1}/source/Sources'.format(self.codename, self.component)
         if sources_path in self.storage:
             return
         sources_content = ''
@@ -216,8 +213,8 @@ class AptRepository(object):
 
     def commit_release_metadata(self, archs):
         # Update Release
-        release_path = self.base_path + '/' + 'dists/{0}/Release'.format(self.codename)
-        release = AptRelease(self.storage, self.codename, self.base_path, self.storage.download(release_path, skip_hash=True) or '')
+        release_path = 'dists/{0}/Release'.format(self.codename)
+        release = AptRelease(self.storage, self.codename, self.storage.download(release_path, skip_hash=True) or '')
         for arch in archs:
             release.add_metadata(self.component, arch)
             release_packages_path = '{0}/binary-{1}/Packages'.format(self.component, arch)
@@ -242,7 +239,7 @@ class AptRepository(object):
         # GPG signing
         if self.gpg:
             # Fun fact, even debian's own tools don't seem to support this InRelease file
-            in_release_path = self.base_path + '/' + 'dists/{0}/InRelease'.format(self.codename)
+            in_release_path = 'dists/{0}/InRelease'.format(self.codename)
             self.storage.upload(in_release_path, self.gpg.sign(release_raw))
             self.storage.upload(release_path+'.gpg', self.gpg.sign(release_raw, detach=True))
 
