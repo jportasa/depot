@@ -30,11 +30,10 @@ Example
 -------
 
 ```
-  depot -s s3://nr-repo-apt \
+  depot -s s3://nr-repo-apt/infrastructure_agent/linux/apt \
     --component precise \
     --gpg-key=258912FEA8A556A83881187D1099BA4A1F5BB4C0 \
     --passphrase=PASSPHRASE \
-    --base-path=infrastructure_agent/linux/apt \
     --pool-path=pool/main/n/nri-redis/nri-redis_1.4.0-1_amd64.deb \
     ../nri-redis_1.4.0-1_amd64.deb \
     --force
