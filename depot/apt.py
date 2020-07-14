@@ -76,6 +76,7 @@ class AptPackages(object):
         pkg['MD5sum'] = hashes['md5'].hexdigest()
         pkg['SHA1'] = hashes['sha1'].hexdigest()
         pkg['SHA256'] = hashes['sha256'].hexdigest()
+        pkg['SHA512'] = hashes['sha512'].hexdigest()
         self.packages[(pkg['Package'], pkg['Version'])] = pkg
 
     def __str__(self, extra_fn=None):
@@ -100,6 +101,7 @@ class AptRelease(AptMeta):
             'md5': self._parse_hashes('MD5Sum'),
             'sha1': self._parse_hashes('SHA1'),
             'sha256': self._parse_hashes('SHA256'),
+            'sha512': self._parse_hashes('SHA512'),
         }
 
     def _parse_hashes(self, key):
@@ -133,6 +135,7 @@ class AptRelease(AptMeta):
         self['MD5Sum'] = self._compile_hashes('md5')
         self['SHA1'] = self._compile_hashes('sha1')
         self['SHA256'] = self._compile_hashes('sha256')
+        self['SHA512'] = self._compile_hashes('sha512')
         if not self.get('Date'):
             now = time.gmtime()
             # The debian standard (Policy 4.4) really does specify the English labels
